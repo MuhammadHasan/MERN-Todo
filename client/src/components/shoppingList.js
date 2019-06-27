@@ -6,7 +6,13 @@ import PropTypes from 'prop-types';
 
 class ShoppingList extends Component {
 
-    componentDidMount(){
+    static propTypes = {
+        getItems: PropTypes.func.isRequired,
+        item: PropTypes.object.isRequired,
+        isAuthenticated: PropTypes.bool
+    }
+
+    componentDidMount() {
         this.props.getItems();
     }
 
@@ -15,40 +21,26 @@ class ShoppingList extends Component {
     }
 
     render() {
-
-        // const { items } = this.state;
         const { items } = this.props.item;
         return (
             <Container>
-                {/* <Button
-                    color="dark"
-                    style={{ marginBottom: '2rem' }}
-                    onClick={() => {
-                        const name = prompt('Enter Item');
-                        if (name) {
-                            this.setState(state => ({
-                                items: [...state.items, { id: uuid(), name }]
-                            }));
-                        }
-                    }
-                    }
-                >
-                    Add Item
-                </Button> */}
-
                 <ListGroup>
                     {items.map(({ _id, name }) => (
-                        <ListGroupItem key={_id}>
-                            <Button
-                                className='remove-btn'
-                                color='danger'
-                                size='sm'
-                                onClick={this.onDeleteClick.bind(this, _id)}
-                            >
-                                &times;
-                            </Button>
-                            {name}
-                        </ListGroupItem>
+                        <div key={_id}>
+                            <ListGroupItem>
+                                {this.props.isAuthenticated ? (
+                                    <Button
+                                        className='remove-btn'
+                                        color='danger'
+                                        size='sm'
+                                        onClick={this.onDeleteClick.bind(this, _id)}
+                                    >
+                                        &times;
+                                        </Button>
+                                ) : null}
+                                {name}
+                            </ListGroupItem>
+                        </div>
                     ))}
                 </ListGroup>
             </Container>
@@ -56,13 +48,10 @@ class ShoppingList extends Component {
     }
 }
 
-ShoppingList.propTypes = {
-    getItems: PropTypes.func.isRequired,
-    item: PropTypes.object.isRequired
-}
 
 const mapStateToProps = (state) => ({
-    item: state.item
+    item: state.item,
+    isAuthenticated: state.auth.isAuthenticated
 })
 
 export default connect(mapStateToProps, { getItems, deleteItem })(ShoppingList);
