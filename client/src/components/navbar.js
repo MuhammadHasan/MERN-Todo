@@ -10,6 +10,12 @@ import {
     Container
 } from 'reactstrap';
 
+// import { connect } from 'react-redux';
+// import PropTypes from 'prop-types';
+import RegisterModal from './auth/RegisterModal';
+// import LoginModal from './auth/LoginModal';
+import Logout from './auth/Logout';
+
 class AppNavbar extends Component {
 
     state = {
@@ -32,7 +38,10 @@ class AppNavbar extends Component {
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <Nav className='ml-auto' navbar>
                                 <NavItem>
-                                    <NavLink>ABC</NavLink>
+                                    <RegisterModal />
+                                </NavItem>
+                                <NavItem>
+                                    <Logout />
                                 </NavItem>
                             </Nav>
                         </Collapse>
